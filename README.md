@@ -26,6 +26,25 @@ Aplicacao desktop em Tauri + React + TypeScript para gerir reservas de sangue, p
 - `npm run tauri dev` — executa a aplicacao desktop Tauri.
 - `npm run build` — gera build de producao do frontend.
 - `npm run tauri build` — cria binarios desktop.
+- `npm run scrape:dador` — extrai dados de `https://dador.pt/sessoes` e grava no Firebase Realtime Database.
+
+## Scraper dador.pt -> Firebase
+
+O script `scripts/dadorScraperToFirebase.mjs` recolhe:
+
+- niveis das reservas de sangue (`/api/blood-reserves`)
+- horarios dos postos (`/api/institutions`)
+- horarios das brigadas moveis e postos avancados/fixos (`/api/sessions`)
+
+e grava no caminho definido em `FIREBASE_SCRAPER_PATH` (por omissao: `scraped/dador_pt`).
+
+Variaveis relevantes no `.env`:
+
+- `FIREBASE_DATABASE_URL`
+- `FIREBASE_SCRAPER_PATH`
+- `DADOR_SCRAPER_OUTPUT` (ficheiro JSON local com os dados normalizados)
+- `FIREBASE_EMAIL` + `FIREBASE_PASSWORD` (opcional, para regras de escrita autenticadas)
+- `FIREBASE_USE_ANON=true` (opcional, caso a autenticacao anonima esteja ativa no projeto)
 
 ## Estrutura principal
 
