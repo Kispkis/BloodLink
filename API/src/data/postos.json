@@ -1,0 +1,22 @@
+[
+  {
+    "id": "posto-1",
+    "name": "Centro de Sangue Porto",
+    "address": "Rua Exemplo 1, Porto",
+    "phone": "+351912345678",
+    "email": "porto@ipst.example",
+    "lat": 41.1496,
+    "lng": -8.6109,
+    "hours": "Seg-Sex 09:00-17:00"
+  },
+  {
+    "id": "posto-2",
+    "name": "Centro de Sangue Lisboa",
+    "address": "Av. Exemplo 2, Lisboa",
+    "phone": "+351912345679",
+    "email": "lisboa@ipst.example",
+    "lat": 38.7223,
+    "lng": -9.1393,
+    "hours": "Seg-Sex 08:00-16:00"
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "id": "brigada-1",
+    "location": "Praça Exemplo, Braga",
+    "date": "2026-03-05T09:00:00Z",
+    "hours": "09:00-13:00",
+    "contact": "+351912000111"
+  },
+  {
+    "id": "brigada-2",
+    "location": "Mercado Municipal, Faro",
+    "date": "2026-03-12T10:00:00Z",
+    "hours": "10:00-14:00",
+    "contact": "+351912000222"
+  }
+]

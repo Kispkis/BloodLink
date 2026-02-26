@@ -1,0 +1,10 @@
+{
+  "updatedAt": "2026-02-26T08:00:00Z",
+  "levels": [
+    { "type": "A+", "units": 120 },
+    { "type": "A-", "units": 40 },
+    { "type": "B+", "units": 80 },
+    { "type": "O+", "units": 60 },
+    { "type": "O-", "units": 12 }
+  ]
+}
