@@ -80,11 +80,11 @@ const API_URLS = {
   bloodReserves: "https://dador.pt/api/blood-reserves",
 };
 
-function normalizeBloodType(value) {
+export function normalizeBloodType(value) {
   return String(value ?? "").replace(/\s+/g, "").toUpperCase();
 }
 
-function normalizeDate(dateText) {
+export function normalizeDate(dateText) {
   if (!dateText) {
     return "";
   }
@@ -99,7 +99,7 @@ function normalizeDate(dateText) {
   return `${year}-${month}-${day}`;
 }
 
-function parseGeoReference(rawValue) {
+export function parseGeoReference(rawValue) {
   if (!rawValue || typeof rawValue !== "string") {
     return null;
   }
@@ -120,7 +120,7 @@ function parseGeoReference(rawValue) {
   return { lat, lng };
 }
 
-function parseDailyTimeBlocks(scheduleText) {
+export function parseDailyTimeBlocks(scheduleText) {
   if (!scheduleText || typeof scheduleText !== "string") {
     return [];
   }
@@ -142,7 +142,7 @@ function parseDailyTimeBlocks(scheduleText) {
   return blocks;
 }
 
-function mapBloodReserveEntries(entries) {
+export function mapBloodReserveEntries(entries) {
   if (!Array.isArray(entries)) {
     return [];
   }
@@ -155,7 +155,7 @@ function mapBloodReserveEntries(entries) {
     }));
 }
 
-function mapRegionalReserves(regionsRaw) {
+export function mapRegionalReserves(regionsRaw) {
   const mapped = {};
 
   if (!Array.isArray(regionsRaw)) {
@@ -184,7 +184,7 @@ function mapRegionalReserves(regionsRaw) {
   return mapped;
 }
 
-function transformBloodReserves(apiPayload) {
+export function transformBloodReserves(apiPayload) {
   const source = apiPayload?.data?.ReservasSangue ?? {};
   const sourceDate = source?.Data?.[0]?.[0] ?? "";
 
@@ -197,7 +197,7 @@ function transformBloodReserves(apiPayload) {
   };
 }
 
-function transformInstitutions(apiPayload) {
+export function transformInstitutions(apiPayload) {
   const institutions = apiPayload?.data?.CentrosColheita ?? [];
 
   return institutions.map((item) => ({
@@ -215,7 +215,7 @@ function transformInstitutions(apiPayload) {
   }));
 }
 
-function transformSessions(apiPayload) {
+export function transformSessions(apiPayload) {
   const sessions = apiPayload?.data?.Sessoes ?? [];
 
   const normalized = sessions.map((item) => {
@@ -249,7 +249,7 @@ function transformSessions(apiPayload) {
   };
 }
 
-async function fetchJson(url) {
+export async function fetchJson(url) {
   const response = await fetch(url, {
     method: "GET",
     headers: {
@@ -271,7 +271,7 @@ async function fetchJson(url) {
   return payload;
 }
 
-async function run() {
+export async function run() {
   const [bloodReservesRaw, institutionsRaw, sessionsRaw] = await Promise.all([
     fetchJson(API_URLS.bloodReserves),
     fetchJson(API_URLS.institutions),
@@ -324,17 +324,29 @@ async function run() {
   console.log(`🚐 Brigadas móveis: ${payload.brigadas_moveis_horarios.length}`);
 }
 
-run().catch((error) => {
-  const absoluteOutputPath = path.resolve(projectRoot, localOutputPath);
+function isExecutedDirectly() {
+  const entryFile = process.argv[1];
 
-  console.error("❌ Erro ao executar scraper:");
-  console.error(error);
-
-  if (error?.code === "PERMISSION_DENIED") {
-    console.error("\nℹ️ O JSON foi gerado localmente, mas o Firebase bloqueou escrita pelas regras atuais.");
-    console.error(`   Ficheiro local: ${absoluteOutputPath}`);
-    console.error("   Opcional: configure FIREBASE_EMAIL/FIREBASE_PASSWORD ou FIREBASE_USE_ANON=true no .env.");
+  if (!entryFile) {
+    return false;
   }
 
-  process.exitCode = 1;
-});
+  return path.resolve(entryFile) === __filename;
+}
+
+if (isExecutedDirectly()) {
+  run().catch((error) => {
+    const absoluteOutputPath = path.resolve(projectRoot, localOutputPath);
+
+    console.error("❌ Erro ao executar scraper:");
+    console.error(error);
+
+    if (error?.code === "PERMISSION_DENIED") {
+      console.error("\nℹ️ O JSON foi gerado localmente, mas o Firebase bloqueou escrita pelas regras atuais.");
+      console.error(`   Ficheiro local: ${absoluteOutputPath}`);
+      console.error("   Opcional: configure FIREBASE_EMAIL/FIREBASE_PASSWORD ou FIREBASE_USE_ANON=true no .env.");
+    }
+
+    process.exitCode = 1;
+  });
+}

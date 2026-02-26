@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "tauri": "tauri",
-    "scrape:dador": "node ./scripts/dadorScraperToFirebase.mjs"
+    "scrape:dador": "node ./scripts/dadorScraperToFirebase.mjs",
+    "test:scraper": "node ./scripts/testDadorScraper.mjs",
+    "test:unit:scraper": "node --test ./tests/dadorScraper.unit.test.mjs"
   },
   "dependencies": {
     "@tauri-apps/api": "^2",
